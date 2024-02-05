@@ -1,47 +1,79 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
+</head>
+
+<body>
     <div class="container">
-      <div>
-        <h1 class="header_text">Do you wanna go out with me?</h1>
-      </div>
-      <div class="gif_container">
-        <img
-          src="https://media1.tenor.com/m/GuM0nJ9zWzMAAAAC/shinchan-meri.gif"
-          alt="Cute animated illustration" width="250 px"
-        />
-      </div>
-      <div class="buttons">
-        <button class="btn" id="yesButton" onclick="nextPage()">Yes</button>
-        <div id="buttonContainer"> <!-- Add a container for the "No" button -->
-          <button class="btn" id="noButton" onmouseover="moveButton()" onclick="moveButton()">No</button>
+        <div>
+            <h1 class="header_text">Do you wanna go out with me?</h1>
         </div>
-      </div>
-      
+        <div class="gif_container">
+            <img src="https://media1.tenor.com/m/GuM0nJ9zWzMAAAAC/shinchan-meri.gif" alt="Cute animated illustration"
+                width="250 px" />
+        </div>
+        <div class="buttons">
+            <button class="btn" id="yesButton" onclick="nextPage()">Yes</button>
+            <div id="buttonContainer"> <!-- Add a container for the "No" button -->
+                <button class="btn" id="noButton" onmouseover="moveButton()" onclick="moveButton()">No</button>
+            </div>
+        </div>
+
 
         <script>
+            const container = document.getElementById("buttonContainer");
+            const noButton = document.getElementById("noButton");
+
+            const multiplyByNegativeOneRandomly = (number) => {
+                // Generate a random boolean to determine whether to multiply by -1
+                const shouldMultiplyByNegativeOne = Math.random() < 0.5;
+
+                // Multiply by -1 if the condition is true, otherwise return the original number
+                return shouldMultiplyByNegativeOne ? number * -1 : number;
+            };
+
+            const getRandomIntegerAwayFromValue = (min, max, value, minDistance = 50) => {
+                // Ensure that min and max are integers
+                const minInt = Math.ceil(min);
+                const maxInt = Math.floor(max);
+
+                // Generate a random integer within the range
+                let randomNum = Math.floor(Math.random() * (maxInt - minInt + 1)) + minInt;
+
+                // Ensure the generated number is far from the passed value
+                if (Math.abs(randomNum - value) < minDistance) {
+                    randomNum += minDistance;
+                }
+
+                return randomNum;
+            };
+
+
+
             function nextPage() {
-  window.location.href = "yes.html";
-}
+                const urlSearchParams = new URLSearchParams(window.location.search);
+                window.location.href = `yes.html?m=${urlSearchParams.get("m") || ''}`;
+            }
 
-function moveButton() {
-  var container = document.getElementById("buttonContainer");
-  var noButton = document.getElementById("noButton");
+            function moveButton() {
+                // Get current coordinates of the no button
+                const currPos = noButton.getClientRects()[0];
+                const currX = currPos.x;
+                const currY = currPos.y;
 
-  // Increase the boundary by 50 pixels
-  var maxX = container.offsetWidth - noButton.offsetWidth + 50;
-  
-  // Increase the speed by multiplying the random value with a higher factor (e.g., 2)
-  var x = Math.random() * maxX * 25;
-  noButton.style.left = `${x}px`;
-}
+                // Calculate new offset for the no button
+                const x = multiplyByNegativeOneRandomly(getRandomIntegerAwayFromValue(75, 100, currX));
+                const y = multiplyByNegativeOneRandomly(getRandomIntegerAwayFromValue(75, 100, currY));
 
-
+                // Update the style
+                noButton.style.left = `${x}px`;
+                noButton.style.top = `${y}px`;
+            }
         </script>
-      </div>
     </div>
-  </body>
+    </div>
+</body>
+
 </html>
