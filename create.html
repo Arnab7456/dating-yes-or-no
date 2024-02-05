@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <div class="container">
+        <div>
+            <h1 class="header_text">Create your link</h1>
+        </div>
+        <input type="text" placeholder="Enter message for crush">
+        <div class="input_container">
+            <button class="btn" onclick="getLink()">Get Link</button>
+            <h3></h3>
+            <!-- <button class="btn" id="yesButton" onclick="nextPage()">
+        Let's Fix a Date
+      </button> -->
+        </div>
+        <script>
+            const getLink = () => {
+                const rawMessage = document.getElementsByTagName("input")[0].value;
+                const b64Message = btoa(rawMessage);
+                const finalUrl = `${window.location.origin}/index.html?m=${b64Message}`;
+                document.getElementsByTagName("h3")[0].innerText = finalUrl;
+                navigator.clipboard.writeText(finalUrl)
+                    .then(() => {
+                        alert('Message URL copied to clipboard:', finalUrl);
+                    })
+                    .catch((err) => {
+                        console.log('Unable to copy URL to clipboard. Copy it manually yourself.', err);
+                    });
+            }
+        </script>
+</body>
+
+</html>
